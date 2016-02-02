@@ -23,10 +23,10 @@ public class CsvFileDataParser {
     }
 
     /**
-     * Parses CSV file of address book records, converts them into {@link Collection}
+     * Parses CSV file of address book records, converts them into {@link AddressBook}
      * of {@link Person}.
      *
-     * @return {@link Collection} of {@link Person}
+     * @return {@link AddressBook}
      * @throws UnsuccessfulAttemptException if there is any {@link IOException}
      * @throws InvalidAddressBookEntryException any row in the list of records has invalid age or date.
      */
