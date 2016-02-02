@@ -1,5 +1,6 @@
 package com.address.book.core;
 
+import com.address.book.domain.AddressBook;
 import com.address.book.domain.Gender;
 import com.address.book.domain.Person;
 import com.address.book.util.DateFactory;
@@ -10,7 +11,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 
 public class CsvFileDataParser {
@@ -30,7 +30,7 @@ public class CsvFileDataParser {
      * @throws UnsuccessfulAttemptException if there is any {@link IOException}
      * @throws InvalidAddressBookEntryException any row in the list of records has invalid age or date.
      */
-    public Collection<Person> parse() throws UnsuccessfulAttemptException, InvalidAddressBookEntryException {
+    public AddressBook parse() throws UnsuccessfulAttemptException, InvalidAddressBookEntryException {
         File file = new File(fileSource);
         System.out.println(file.getName() + " file exists = " + file.exists());
 
@@ -51,7 +51,7 @@ public class CsvFileDataParser {
             throw new InvalidAddressBookEntryException(line, e);
         }
 
-        return Collections.unmodifiableCollection(persons);
+        return new AddressBook(persons);
     }
 
     private Person createPersonFrom(String line)  {

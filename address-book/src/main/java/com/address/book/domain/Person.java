@@ -1,6 +1,8 @@
 package com.address.book.domain;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Person {
@@ -21,6 +23,10 @@ public class Person {
 
     public Gender getGender() {
         return gender;
+    }
+
+    public long age() {
+        return dateOfBirth.until(LocalDate.now(), ChronoUnit.YEARS);
     }
 
     public LocalDate getDateOfBirth() {

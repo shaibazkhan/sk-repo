@@ -9,6 +9,6 @@ public class DateFactory {
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
     public LocalDate convertStringToDate(String value) throws DateTimeParseException {
-        return LocalDate.parse(value, formatter);
+        return LocalDate.parse(value, formatter).minusYears(100);
     }
 }

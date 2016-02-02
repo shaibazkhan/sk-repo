@@ -1,9 +1,7 @@
 package com.address.book.core;
 
-import com.address.book.domain.Person;
+import com.address.book.domain.AddressBook;
 import org.junit.Test;
-
-import java.util.Collection;
 
 import static com.address.book.domain.Gender.FEMALE;
 import static com.address.book.domain.Gender.MALE;
@@ -17,17 +15,17 @@ public class CsvFileDataParserTest {
 
     @Test
     public void parse(){
-        Collection<Person> persons = new CsvFileDataParser(file("/test-data.txt")).parse();
-        assertThat(persons, hasSize(2));
-        assertThat(persons, hasItem(util.person("Bill McKnight", MALE, "16/03/77")));
-        assertThat(persons, hasItem(util.person("Sarah Stone", FEMALE, "20/09/80")));
+        AddressBook addressBook = new CsvFileDataParser(file("/test-data.txt")).parse();
+        assertThat(addressBook.entries(), hasSize(2));
+        assertThat(addressBook.entries(), hasItem(util.person("Bill McKnight", MALE, "16/03/77")));
+        assertThat(addressBook.entries(), hasItem(util.person("Sarah Stone", FEMALE, "20/09/80")));
     }
 
     @Test
     public void parseDuplicateRecords(){
-        Collection<Person> persons = new CsvFileDataParser(file("/duplicate-data.txt")).parse();
-        assertThat(persons, hasSize(1));
-        assertThat(persons, hasItem(util.person("Bill McKnight", MALE, "16/03/77")));
+        AddressBook addressBook = new CsvFileDataParser(file("/duplicate-data.txt")).parse();
+        assertThat(addressBook.entries(), hasSize(1));
+        assertThat(addressBook.entries(), hasItem(util.person("Bill McKnight", MALE, "16/03/77")));
     }
 
     @Test(expected = InvalidAddressBookEntryException.class)
