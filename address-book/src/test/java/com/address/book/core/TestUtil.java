@@ -18,8 +18,8 @@ public class TestUtil {
 
     public AddressBook addressBook(){
         Collection<Person> people = new LinkedHashSet<Person>();
-        people.add(person("Bill McKnight", MALE, "16/03/77"));
-        people.add(person("Paul Robinson", MALE, "15/01/85"));
+        people.add(person("Bill McKnight", MALE, "14/12/97"));
+        people.add(person("Paul Robinson", MALE, "15/12/97"));
         people.add(person("Gemma Lane", FEMALE, "20/11/91"));
         people.add(person("Sarah Stone", FEMALE, "20/09/80"));
         people.add(person("Wes Jackson", MALE, "14/08/74"));

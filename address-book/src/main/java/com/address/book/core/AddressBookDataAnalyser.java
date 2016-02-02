@@ -4,6 +4,7 @@ import com.address.book.domain.AddressBook;
 import com.address.book.domain.Person;
 
 import static com.address.book.domain.Gender.MALE;
+import static java.lang.Math.abs;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class AddressBookDataAnalyser {
@@ -37,7 +38,7 @@ public class AddressBookDataAnalyser {
         Person firstPerson = findPersonByName(firstPersonName);
         Person secondPerson = findPersonByName(secondPersonName);
 
-        return DAYS.between(firstPerson.getDateOfBirth(), secondPerson.getDateOfBirth());
+        return abs(DAYS.between(firstPerson.getDateOfBirth(), secondPerson.getDateOfBirth()));
     }
 
     private Person findPersonByName(String name) {

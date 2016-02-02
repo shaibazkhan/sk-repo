@@ -46,8 +46,10 @@ public class AddressBookDataAnalyserTest {
 
     @Test
     public void ageDifferenceBetweenTwoPersonsInDays(){
-        long days = dataAnalyser.findAgeDifferenceInDaysBetween("Bill McKnight", "Paul Robinson");
-        assertThat("age difference in days", days, is(2862L));
+        assertThat("age difference in days",
+                dataAnalyser.findAgeDifferenceInDaysBetween("Bill McKnight", "Paul Robinson"), is(1L));
+        assertThat("age difference in days",
+                dataAnalyser.findAgeDifferenceInDaysBetween("Paul Robinson", "Bill McKnight"), is(1L));
     }
 
     @Test(expected = PersonNotFoundException.class)

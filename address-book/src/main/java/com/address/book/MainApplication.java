@@ -23,7 +23,7 @@ public class MainApplication {
     }
 
     private static void printAnswerForMaleCountInTheAddressBook(AddressBookDataAnalyser dataAnalyser){
-        System.out.println("Q.How many people in the list are male?");
+        System.out.println("Q.How many males are in the address book?");
         System.out.printf("Ans.%d", dataAnalyser.totalNumberOfMales());
     }
 

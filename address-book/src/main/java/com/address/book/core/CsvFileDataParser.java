@@ -34,12 +34,12 @@ public class CsvFileDataParser {
         File file = new File(fileSource);
         System.out.println(file.getName() + " file exists = " + file.exists());
 
-        Collection<Person> persons = new LinkedHashSet<>();
+        Collection<Person> people = new LinkedHashSet<>();
         String line = null;
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             while ((line = bufferedReader.readLine()) != null) {
-                if(!persons.add(createPersonFrom(line))) {
+                if(!people.add(createPersonFrom(line))) {
                     System.out.println("Duplicate record ignored:>" + line + "<");
                 }
             }
@@ -51,7 +51,7 @@ public class CsvFileDataParser {
             throw new InvalidAddressBookEntryException(line, e);
         }
 
-        return new AddressBook(persons);
+        return new AddressBook(people);
     }
 
     private Person createPersonFrom(String line)  {
