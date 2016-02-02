@@ -1,9 +1,11 @@
 package com.address.book.core;
 
+import com.address.book.domain.AddressBook;
 import com.address.book.domain.Person;
 import org.junit.Before;
 import org.junit.Test;
 
+import static java.util.Collections.emptySet;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -15,6 +17,20 @@ public class AddressBookDataAnalyserTest {
     @Before
     public void setUpDataAnalyser(){
         dataAnalyser = new AddressBookDataAnalyser(util.addressBook());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nullAddressBook(){
+        new AddressBookDataAnalyser(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addressBookWithNoEntries(){
+        new AddressBookDataAnalyser(emptyAddressBook());
+    }
+
+    private AddressBook emptyAddressBook() {
+        return new AddressBook(emptySet());
     }
 
     @Test

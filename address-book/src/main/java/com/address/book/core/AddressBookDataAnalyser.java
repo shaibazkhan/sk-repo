@@ -11,6 +11,9 @@ public class AddressBookDataAnalyser {
     private final AddressBook addressBook;
 
     public AddressBookDataAnalyser(AddressBook addressBook) {
+        if(addressBook == null || addressBook.entries().isEmpty()){
+            throw new IllegalArgumentException("cannot analyse NULL or empty address book");
+        }
         this.addressBook = addressBook;
     }
 
