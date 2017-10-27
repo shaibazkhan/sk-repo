@@ -1,5 +1,7 @@
 package com.learn.scala.s99
 
+import scala.collection.immutable
+
 /**
   * Created by shaibazkhan on 16/10/2017.
   *
@@ -24,7 +26,8 @@ object ListFun {
     println("flattened List=" + flatten(List(List(1, 1), 2, List(3, List(5, 8)))))
     println("compressed list=" + compress(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)))
     println("packed list=" + pack(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)))
-
+    println("run-length encoding="+ encode(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)))
+    println("run-lenght encoding modifies=" + encodeModified(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)))
   }
   /**
     * Find the last element of a list.
@@ -140,4 +143,46 @@ object ListFun {
     }
     reverse(doPack(symbols, Nil, Nil))
   }
+
+  /**
+    * Run-length encoding of a list
+    * scala> encode(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e))
+    * res0: List[(Int, Symbol)] = List((4,'a), (1,'b), (2,'c), (2,'a), (1,'d), (4,'e))
+    */
+
+  def encode(list: List[Symbol]) : List[(Int, Symbol)] = {
+
+    def doEncode(list: List[Symbol], current: List[(Int, Symbol)], headCount: Int): List[(Int, Symbol)] = list match {
+      case List() => current
+      case x :: xs =>
+        if(x != xs.headOption.getOrElse(Nil))
+          doEncode(xs, (headCount, x) :: current, 1) else doEncode(xs, current, headCount+1)
+    }
+
+    reverse(doEncode(list, List(), 1))
+  }
+
+
+
+
+  /**
+    * Modified run-length encoding.
+    * scala> encodeModified(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e))
+    * res0: List[Any] = List((4,'a), 'b, (2,'c), (2,'a), 'd, (4,'e))
+    */
+  def encodeModified(symbols: List[Any]): List[Any] = {
+
+    def element(x: Any, headCount: Int): Any = if(headCount > 1) (headCount, x) else x
+
+    def doEncodeModified(symbols: List[Any], current: List[Any], headCount: Int): List[Any] = symbols match {
+      case List() => current
+      case x :: xs =>
+        if(x != xs.headOption.getOrElse(Nil))
+          doEncodeModified(xs, element(x, headCount) :: current, 1)
+        else doEncodeModified(xs, current, headCount+1)
+    }
+
+    reverse(doEncodeModified(symbols, Nil, 1))
+  }
+
 }
