@@ -1,5 +1,7 @@
 package com.learn.scala.s99
 
+import javax.xml.transform.Result
+
 import scala.collection.immutable
 
 /**
@@ -28,6 +30,11 @@ object ListFun {
     println("packed list=" + pack(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)))
     println("run-length encoding="+ encode(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)))
     println("run-lenght encoding modifies=" + encodeModified(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)))
+    println("decoded list=" + decode(List((4, 'a), (1, 'b), (2, 'c), (2, 'a), (1, 'd), (4, 'e))))
+    println("duplicate list=" + duplicate(List('a, 'b, 'c, 'c, 'd)))
+    println("duplicate N times=" + duplicateN(3, List('a, 'b, 'c, 'c, 'd)))
+    println("drop nth element=" + drop(3, List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)))
+    println("split=" + split(3, List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)))
   }
   /**
     * Find the last element of a list.
@@ -52,7 +59,6 @@ object ListFun {
       case x :: _ :: Nil => x
       case x :: xs => searchPenultimate(xs.head, xs)
     }
-
     searchPenultimate(values.head, values.tail)
   }
 
@@ -151,7 +157,6 @@ object ListFun {
     */
 
   def encode(list: List[Symbol]) : List[(Int, Symbol)] = {
-
     def doEncode(list: List[Symbol], current: List[(Int, Symbol)], headCount: Int): List[(Int, Symbol)] = list match {
       case List() => current
       case x :: xs =>
@@ -162,27 +167,96 @@ object ListFun {
     reverse(doEncode(list, List(), 1))
   }
 
-
-
-
   /**
     * Modified run-length encoding.
     * scala> encodeModified(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e))
     * res0: List[Any] = List((4,'a), 'b, (2,'c), (2,'a), 'd, (4,'e))
     */
   def encodeModified(symbols: List[Any]): List[Any] = {
-
     def element(x: Any, headCount: Int): Any = if(headCount > 1) (headCount, x) else x
-
     def doEncodeModified(symbols: List[Any], current: List[Any], headCount: Int): List[Any] = symbols match {
-      case List() => current
+      case List() => reverse(current)
       case x :: xs =>
         if(x != xs.headOption.getOrElse(Nil))
           doEncodeModified(xs, element(x, headCount) :: current, 1)
         else doEncodeModified(xs, current, headCount+1)
     }
-
-    reverse(doEncodeModified(symbols, Nil, 1))
+    doEncodeModified(symbols, Nil, 1)
   }
 
+  /**
+    * Decode a run-length encoded list.
+    * scala> decode(List((4, 'a), (1, 'b), (2, 'c), (2, 'a), (1, 'd), (4, 'e)))
+    * res0: List[Symbol] = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+    */
+  def decode(list: List[(Int, Symbol)]): List[Symbol] = {
+    def doDecode(list: List[(Int, Symbol)], result: List[Symbol], count: Int): List[Symbol] = (count, list) match {
+      case (0, List()) => reverse(result)
+      case (0, x :: xs) => doDecode(xs, x._2 :: result, x._1 - 1)
+      case (_, _) => doDecode(list, result.head :: result, count - 1)
+    }
+    doDecode(list, Nil, 0)
+  }
+
+  /**
+    *
+    * scala> duplicate(List('a, 'b, 'c, 'c, 'd))
+    * res0: List[Symbol] = List('a, 'a, 'b, 'b, 'c, 'c, 'c, 'c, 'd, 'd)
+    */
+  def duplicate(symbols: List[Symbol]): List[Symbol] = {
+    def doDuplicate(symbols: List[Symbol], result: List[Symbol]): List[Symbol] = symbols match{
+      case List() => reverse(result)
+      case x :: xs => doDuplicate(xs, x :: x :: result)
+    }
+    doDuplicate(symbols, Nil)
+  }
+
+  /**
+    * Duplicate the elements of a list a given number of times.
+    * scala> duplicateN(3, List('a, 'b, 'c, 'c, 'd))
+    * res0: List[Symbol] = List('a, 'a, 'a, 'b, 'b, 'b, 'c, 'c, 'c, 'c, 'c, 'c, 'd, 'd, 'd)
+    */
+  def duplicateN(times: Int, symbols: List[Symbol]): List[Symbol] = {
+    def nTimesDuplicate(symbols: List[Symbol], result: List[Symbol]): List[Symbol] = symbols match{
+      case List() => result
+      case x :: xs => nTimesDuplicate(xs,  result ::: (for(i <- 1 to times) yield x).toList)// or List.fill(times)(x)
+
+    }
+    nTimesDuplicate(symbols, Nil)
+  }
+
+  /**
+    * Drop every Nth element from a list.
+    * scala> drop(3, List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k))
+    * res0: List[Symbol] = List('a, 'b, 'd, 'e, 'g, 'h, 'j, 'k)
+    */
+  def drop(index : Int, symbols: List[Symbol]): List[Symbol] = {
+
+    def dropAt(symbols: List[Symbol], count: Int, result: List[Symbol]) : List[Symbol] = (count, symbols) match {
+      case (_, List()) => reverse(result)
+      case (1, x :: xs) => dropAt(xs, index, result)
+      case (_, x :: xs) => dropAt(xs, count-1, x :: result)
+    }
+
+    dropAt(symbols, index, Nil)
+  }
+
+  /**
+    * Split a list into two parts.
+    * The length of the first part is given. Use a Tuple for your result.
+    *
+    * scala> split(3, List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k))
+    * res0: (List[Symbol], List[Symbol]) = (List('a, 'b, 'c),List('d, 'e, 'f, 'g, 'h, 'i, 'j, 'k))
+    */
+  def split(length: Int, symbols: List[Symbol]): (List[Symbol], List[Symbol]) = {
+
+    def splitAt(symbols: List[Symbol],
+                count: Int,
+                result: List[Symbol]): (List[Symbol], List[Symbol]) = (count, symbols) match{
+      case (_, List())  => (reverse(result), Nil)
+      case (0, xs) => (reverse(result), xs)
+      case (_, x :: xs) => splitAt(xs, count - 1, x :: result)
+    }
+    splitAt(symbols, length, Nil)
+  }
 }
