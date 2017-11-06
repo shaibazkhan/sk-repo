@@ -40,9 +40,8 @@ public class TransactionService {
     }
 
     private void checkIfTransactionExists(Transaction transaction) {
-        if (!this.getTransaction(transaction.getId()).isPresent()) {
-            throw new UnsuccessfulFundsTransferException(format("transaction id %s doesn't exist", transaction.getId()));
-        }
+        getTransaction(transaction.getId())
+                .orElseThrow(() -> new UnsuccessfulFundsTransferException(format("transaction id %s doesn't exist", transaction.getId())));
     }
 
     private void transferFunds(Transaction transaction) {
@@ -52,10 +51,7 @@ public class TransactionService {
     }
 
     private Account retrieveAccount(String accountId) {
-        Account account = this.accountsService.getAccount(accountId);
-        if(account == null) {
-            throw new UnsuccessfulFundsTransferException(format("account id %s doesn't exist", accountId));
-        }
-        return account;
+        return Optional.ofNullable(this.accountsService.getAccount(accountId))
+                .orElseThrow(() -> new UnsuccessfulFundsTransferException(format("account id %s doesn't exist", accountId)));
     }
 }
