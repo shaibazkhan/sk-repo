@@ -12,7 +12,7 @@ public interface Offer {
         return (items) -> {
             long count = items
                     .stream().filter(basketItem -> basketItem.item() == item)
-                    .map(BasketItem::quantity).findAny().orElse(0);
+                    .map(BasketItem::quantity).findFirst().orElse(0);
 
             return new BigDecimal(count/3).multiply(item.unitPrice());
         };
