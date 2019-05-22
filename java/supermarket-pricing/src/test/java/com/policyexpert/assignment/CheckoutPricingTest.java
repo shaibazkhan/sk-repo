@@ -43,4 +43,12 @@ public class CheckoutPricingTest {
         );
         assertThat(price, is(new BigDecimal("1.70")));
     }
+
+    @Test
+    public void threeForThePriceOfTwo() {
+        BigDecimal price = pricing.totalPrice(
+                ImmutableList.of(new BasketItem(Beans, 3, quantified()))
+        );
+        assertThat(price, is(new BigDecimal("1.00")));
+    }
 }
