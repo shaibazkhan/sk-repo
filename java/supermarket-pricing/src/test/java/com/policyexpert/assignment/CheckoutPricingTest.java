@@ -8,14 +8,15 @@ import java.math.BigDecimal;
 import static com.policyexpert.assignment.Item.Beans;
 import static com.policyexpert.assignment.Item.Coke;
 import static com.policyexpert.assignment.Item.Oranges;
+import static com.policyexpert.assignment.Offer.threeForTwoOfferOn;
 import static com.policyexpert.assignment.PricingStrategy.quantified;
 import static com.policyexpert.assignment.PricingStrategy.weighted;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class CheckoutPricingTest {
 
-    private CheckoutPricing pricing = new CheckoutPricing();
+    private CheckoutPricing pricing = new CheckoutPricing(threeForTwoOfferOn(Beans));
 
     @Test
     public void priceForBeans() {
