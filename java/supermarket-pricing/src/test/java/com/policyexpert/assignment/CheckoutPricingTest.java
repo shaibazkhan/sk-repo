@@ -1,6 +1,7 @@
 package com.policyexpert.assignment;
 
 import com.google.common.collect.ImmutableList;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import static com.policyexpert.assignment.Item.Beans;
 import static com.policyexpert.assignment.Item.Coke;
 import static com.policyexpert.assignment.Item.Oranges;
 import static com.policyexpert.assignment.Offer.threeForTwoOfferOn;
+import static com.policyexpert.assignment.Offer.twoForAPrice;
 import static com.policyexpert.assignment.PricingStrategy.quantified;
 import static com.policyexpert.assignment.PricingStrategy.weighted;
 import static org.hamcrest.Matchers.is;
@@ -16,7 +18,16 @@ import static org.junit.Assert.assertThat;
 
 public class CheckoutPricingTest {
 
-    private CheckoutPricing pricing = new CheckoutPricing(threeForTwoOfferOn(Beans));
+    private CheckoutPricing pricing;
+
+    @Before
+    public void setUpCheckoutPricing() {
+      pricing = new CheckoutPricing(applicableOffers());
+    }
+
+    private ImmutableList<Offer> applicableOffers() {
+        return ImmutableList.of(threeForTwoOfferOn(Beans), twoForAPrice(Coke, new BigDecimal("0.20")));
+    }
 
     @Test
     public void priceForBeans() {

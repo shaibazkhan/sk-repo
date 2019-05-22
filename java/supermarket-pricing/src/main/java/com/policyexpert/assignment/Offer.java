@@ -17,4 +17,17 @@ public interface Offer {
             return new BigDecimal(count/3).multiply(item.unitPrice());
         };
     }
+
+    static Offer twoForAPrice(Item item, BigDecimal discount) {
+        return (items) -> {
+            long count = items.stream().filter(basketItem -> basketItem.item() == item)
+                    .map(BasketItem::quantity).findFirst().orElse(0);
+
+            if (count > 1) {
+                return new BigDecimal(count).multiply(discount);
+            }
+
+            return BigDecimal.ZERO;
+        };
+    }
 }
