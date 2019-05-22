@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import static com.policyexpert.assignment.Item.Beans;
 import static com.policyexpert.assignment.Item.Coke;
 import static com.policyexpert.assignment.Item.Oranges;
+import static com.policyexpert.assignment.PricingStrategy.quantified;
+import static com.policyexpert.assignment.PricingStrategy.weighted;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -17,26 +19,27 @@ public class CheckoutPricingTest {
 
     @Test
     public void priceForBeans() {
-        BigDecimal price = pricing.totalPrice(ImmutableList.of(new BasketItem(Beans, 1)));
+        BigDecimal price = pricing.totalPrice(ImmutableList.of(new BasketItem(Beans, 1, quantified())));
         assertThat(price, is(new BigDecimal("0.50")));
     }
 
     @Test
     public void priceForCoke() {
-        BigDecimal price = pricing.totalPrice(ImmutableList.of(new BasketItem(Coke, 1)));
+        BigDecimal price = pricing.totalPrice(ImmutableList.of(new BasketItem(Coke, 1, quantified())));
         assertThat(price, is(new BigDecimal("0.70")));
     }
 
     @Test
     public void priceForWeightedItem() {
-        BigDecimal price = pricing.totalPrice(ImmutableList.of(new BasketItem(Oranges, 200)));
+        BigDecimal price = pricing.totalPrice(ImmutableList.of(new BasketItem(Oranges, 200, weighted())));
         assertThat(price, is(new BigDecimal("0.40")));
     }
 
     @Test
     public void priceForMultipleItems() {
         BigDecimal price = pricing.totalPrice(
-                ImmutableList.of(new BasketItem(Beans, 2), new BasketItem(Coke, 1))
+                ImmutableList.of(new BasketItem(Beans, 2, quantified()),
+                        new BasketItem(Coke, 1, quantified()))
         );
         assertThat(price, is(new BigDecimal("1.70")));
     }

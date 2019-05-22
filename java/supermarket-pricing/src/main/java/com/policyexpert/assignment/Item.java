@@ -2,6 +2,8 @@ package com.policyexpert.assignment;
 
 import java.math.BigDecimal;
 
+import static com.policyexpert.assignment.PricingStrategy.scaleSet;
+
 public enum Item {
 
     Beans(new BigDecimal("0.50")),
@@ -11,7 +13,7 @@ public enum Item {
     private final BigDecimal unitPrice;
 
     Item(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice.setScale(2, BigDecimal.ROUND_HALF_UP);;
+        this.unitPrice = scaleSet(unitPrice);
     }
 
     public BigDecimal unitPrice() {
