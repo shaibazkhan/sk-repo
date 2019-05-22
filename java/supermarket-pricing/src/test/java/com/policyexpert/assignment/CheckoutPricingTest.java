@@ -16,19 +16,19 @@ public class CheckoutPricingTest {
 
     @Test
     public void priceForBeans() {
-        BigDecimal price = pricing.totalPrice(Beans, 1);
+        BigDecimal price = pricing.totalPrice(new BasketItem(Beans, 1));
         assertThat(price, is(new BigDecimal("0.50")));
     }
 
     @Test
     public void priceForCoke() {
-        BigDecimal price = pricing.totalPrice(Coke, 1);
+        BigDecimal price = pricing.totalPrice(new BasketItem(Coke, 1));
         assertThat(price, is(new BigDecimal("0.70")));
     }
 
     @Test
     public void priceForWeightedItem() {
-        BigDecimal price = pricing.totalPrice(Oranges, 200);
+        BigDecimal price = pricing.totalPrice(new BasketItem(Oranges, 200));
         assertThat(price, is(new BigDecimal("0.40")));
     }
 }
