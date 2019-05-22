@@ -16,4 +16,10 @@ public class CheckoutPricingTest {
         BigDecimal price = pricing.totalPrice("Beans");
         assertThat(price, is(new BigDecimal("0.50")));
     }
+
+    @Test
+    public void priceForCoke() {
+        BigDecimal price = pricing.totalPrice("Coke");
+        assertThat(price, is(new BigDecimal("0.70")));
+    }
 }

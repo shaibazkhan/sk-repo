@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 
 public class CheckoutPricing {
     public BigDecimal totalPrice(String item) {
-        return new BigDecimal("0.50");
+        if (item.equals("Beans")) {
+            return new BigDecimal("0.50");
+        }
+
+        return new BigDecimal("0.70");
     }
 }
