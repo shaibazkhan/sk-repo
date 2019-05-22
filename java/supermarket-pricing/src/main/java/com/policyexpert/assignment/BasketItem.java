@@ -18,10 +18,6 @@ public class BasketItem {
         return item;
     }
 
-    BigDecimal unitCostPrice() {
-        return item.unitPrice();
-    }
-
     int quantity() {
         return quantity;
     }
