@@ -1,0 +1,19 @@
+package com.policyexpert.assignment;
+
+import org.junit.Test;
+
+import java.math.BigDecimal;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
+
+public class CheckoutPricingTest {
+
+    private CheckoutPricing pricing = new CheckoutPricing();
+
+    @Test
+    public void priceForBeans() {
+        BigDecimal price = pricing.totalPrice("Beans");
+        assertThat(price, is(new BigDecimal("0.50")));
+    }
+}
