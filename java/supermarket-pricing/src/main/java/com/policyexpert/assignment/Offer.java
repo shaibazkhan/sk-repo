@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public interface Offer {
 
-    BigDecimal apply(ImmutableList<BasketItem> items);
+    BigDecimal applyOn(ImmutableList<BasketItem> items);
 
     static Offer threeForTwoOfferOn(Item item) {
         return (items) -> {

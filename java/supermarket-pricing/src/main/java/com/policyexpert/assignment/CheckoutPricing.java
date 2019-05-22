@@ -19,6 +19,6 @@ public class CheckoutPricing {
     }
 
     private BigDecimal offers(ImmutableList<BasketItem> items) {
-        return offers.stream().map(offer -> offer.apply(items)).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return offers.stream().map(offer -> offer.applyOn(items)).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
