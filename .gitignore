@@ -1,8 +1,42 @@
+*/bin/*
+bin/
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+
+# Eclipse
+.settings/
+*.project
+*.classpath
+.prefs
+*.prefs
+.metadata/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+out/
+
+# Mac
+.DS_Store
+
+# Maven
+log/*
 target/
 
-.classpath
-.project
-.settings
-.idea
-*.iml
-.DS_Store
+# Gradle
+.gradle/
+
+**/dist
+**/tmp
+**/out-tsc
+**/nbproject/
+**/nb-configuration.xml
+
+**/build
