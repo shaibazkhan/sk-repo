@@ -39,4 +39,25 @@ class StringCalculatorTest {
         }
         assertEquals("Number expected but EOF found", error.message)
     }
+
+    @Test
+    fun `add numbers with different separator`(){
+        assertEquals("3", calculator.add("//;\n1;2"))
+    }
+
+    @Test
+    fun `negative numbers results in error`() {
+        val error = assertThrows(IllegalArgumentException::class.java) {
+            calculator.add("-1,-2")
+        }
+        assertEquals("Negative not allowed : -1,-2", error.message)
+    }
+
+    @Test
+    fun `multiple errors will return all error messages`() {
+        val error = assertThrows(IllegalArgumentException::class.java) {
+            calculator.add("1,-3,")
+        }
+        assertEquals("Number expected but EOF found\nNegative not allowed : -3", error.message)
+    }
 }
