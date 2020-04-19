@@ -23,24 +23,15 @@ class StringCalculator {
             Pair(listOf(",", "\n"), input)
 
     private fun Iterable<String>.validateBeforeCalculate() {
-        fun validateMissingNumberInLastPosition(input: String): String? {
-            return input.toIntOrNull()?.let { "" }?: "Number expected but EOF found"
-        }
+        val messages = mutableListOf<String>()
+        if (this.last().toIntOrNull() == null)
+            messages.add("Number expected but EOF found")
 
-        fun validateNegativeNumbers(): String {
-            val negatives = this.filter { it.toIntOrNull() !=null }.filter { it.toInt() < 0 }
-            return if (negatives.isNotEmpty())
-                "Negative not allowed : ${negatives.joinToString(",")}"
-            else
-                ""
-        }
+        val negatives = this.filter { it.toIntOrNull() !=null }.filter { it.toInt() < 0 }
+        if(negatives.isNotEmpty())
+            messages.add("Negative not allowed : ${negatives.joinToString(",")}")
 
-        val messages = listOfNotNull(
-                validateMissingNumberInLastPosition(this.last()),
-                validateNegativeNumbers()
-        )
-
-        if(messages.any { it.isNotEmpty() })
-            throw IllegalArgumentException(messages.filter { it.isNotEmpty() }.joinToString("\n"))
+        if(messages.isNotEmpty())
+            throw IllegalArgumentException(messages.joinToString("\n"))
     }
 }
