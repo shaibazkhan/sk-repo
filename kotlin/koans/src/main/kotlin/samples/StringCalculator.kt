@@ -1,6 +1,7 @@
 package samples
 
 import java.lang.IllegalArgumentException
+import java.util.Objects.isNull
 
 class StringCalculator {
     fun add(input: String = "") = if(input.isNotEmpty()) calculate(numbersOnly(extract(input))) else "0"
@@ -24,10 +25,10 @@ class StringCalculator {
 
     private fun Iterable<String>.validateBeforeCalculate() {
         val messages = mutableListOf<String>()
-        if (this.last().toIntOrNull() == null)
+        if (isNull(this.last().toIntOrNull()))
             messages.add("Number expected but EOF found")
 
-        val negatives = this.filter { it.toIntOrNull() !=null }.filter { it.toInt() < 0 }
+        val negatives = this.filter { !isNull(it.toIntOrNull()) }.filter { it.toInt() < 0 }
         if(negatives.isNotEmpty())
             messages.add("Negative not allowed : ${negatives.joinToString(",")}")
 
